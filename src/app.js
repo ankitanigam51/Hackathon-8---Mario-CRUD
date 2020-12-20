@@ -35,16 +35,16 @@ app.post('/mario', async(req,res) => {
     } else {
         const newMariodocument = new marioModel(newMario);
         await newMariodocument.save();
-        res.send(newMariodocument);
+        res.status(201).send(newMariodocument);
     }
 });
 
 app.patch('/mario/:id', async(req,res) => {
-    const id = req.body
+    const id = req.params.body
     const newMario = req.body;
     try {
     const existingMarioDoc = await marioModel.findById(id);
-    if(isNullOrUndefined(newMario.name) || isNullOrUndefined(newMario.weight)) {
+    if(isNullOrUndefined(newMario.name) && isNullOrUndefined(newMario.weight)) {
         res.status(400).send({message: 'both name and weight is missing'});
     } else{
         if(!isNullOrUndefined(newMario.name)){
@@ -65,7 +65,7 @@ app.patch('/mario/:id', async(req,res) => {
 app.delete('/mario/:id', async(req,res) => {
     const id = req.params.id;
     try {
-        const res = await marioModel.findById(id);
+        await marioModel.findById(id);
         await marioModel.deleteOne({_id: id});
         res.send({message: 'character deleted'});
     }
