@@ -40,7 +40,7 @@ app.post('/mario', async(req,res) => {
 });
 
 app.patch('/mario/:id', async(req,res) => {
-    const id = req.params.body
+    const id = req.params.id;
     const newMario = req.body;
     try {
     const existingMarioDoc = await marioModel.findById(id);
